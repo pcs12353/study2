@@ -1,6 +1,7 @@
 package com.study.board;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
@@ -29,6 +30,11 @@ public class StudyController {
         post2.put("tags", List.of("React", "Frontend"));
         post2.put("status", "모집중");
 
+        // 3. 게시글 삭제하기 (삭제)
+    @DeleteMapping("/{id}") // 주소 뒤에 붙는 숫자가 글 번호(ID)가 됩니다.
+    public void deletePost(@PathVariable Long id) {
+        postRepository.deleteById(id);
+    }
         // 리스트에 담아서 리턴 (이게 JSON으로 변해서 날아감)
         return List.of(post1, post2);
     }
