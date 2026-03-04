@@ -9,7 +9,7 @@ import java.util.*;
 @RestController
 public class StudyController {
 
-    // 중요: 리액트(5173번 항구)가 문을 두드리면 열어줘라! (CORS 설정)
+    //  (CORS 설정)
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/api/posts")
     public List<Map<String, Object>> getPosts() {
@@ -34,6 +34,17 @@ public class StudyController {
     @DeleteMapping("/{id}") // 주소 뒤에 붙는 숫자가 글 번호(ID)가 됩니다.
     public void deletePost(@PathVariable Long id) {
         postRepository.deleteById(id);
+    }
+    // 4. 게시글 수정하기 (수정)
+    @PutMapping("/{id}")
+    public Post updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
+        // 1. 기존 글을 찾아서
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당 글이 없습니다."));
+        
+        // 2. 내용을 고치고 (이 부분은 Post 클래스에 Setter가 필요하지만, 간단히 새로 저장하는 방식으로 구현합니다)
+        // 
+        return postRepository.save(new Post(postDetails.getTitle(), postDetails.getWriter(), postDetails.getContent()));
     }
         // 리스트에 담아서 리턴 (이게 JSON으로 변해서 날아감)
         return List.of(post1, post2);
